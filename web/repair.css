@@ -1,0 +1,49 @@
+.repair-panel {
+  margin-top: var(--s8);
+}
+.repair-code-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s6);
+}
+.repair-code {
+  margin: 0;
+  padding: var(--s4);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  font:
+    var(--text-sm) / 1.55 "Geist Mono Variable",
+    monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.repair-select {
+  min-height: var(--target);
+  padding: var(--s2) var(--s3);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  width: 100%;
+}
+.repair-result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin: 0;
+  gap: var(--s3);
+  font-size: var(--text-sm);
+}
+.repair-result dt {
+  color: var(--muted);
+}
+.repair-result dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 768px) {
+  .repair-code-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
