@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counterexample — component states</title>
+    <meta name="description" content="Counterexample workbench component states and accessibility checks." />
+    <link rel="stylesheet" href="./tokens.css" />
+    <link rel="stylesheet" href="./primitives.css" />
+  </head>
+  <body>
+    <main class="showcase">
+      <h1>Workbench components</h1>
+      <section class="panel stack" aria-labelledby="button-heading">
+        <h2 id="button-heading">Controls</h2>
+        <div class="cluster">
+          <button class="button" type="button">Run fixture</button>
+          <button class="button secondary" type="button">Download evidence</button>
+          <button class="button" type="button" disabled>Waiting for approval</button>
+          <button class="button" type="button" disabled aria-busy="true">Interpreting…</button>
+        </div>
+        <div class="cluster">
+          <span class="badge live">Live NVIDIA interpretation</span>
+          <span class="badge warning">Review required</span>
+          <span class="badge failure">Promise violated</span>
+          <span class="badge success">Bounded control passes</span>
+        </div>
+      </section>
+      <section class="panel stack" aria-labelledby="field-heading">
+        <h2 id="field-heading">Promise input</h2>
+        <div><label class="field-label" for="example-promise">Business promise</label><textarea id="example-promise">Never charge twice for the same purchase, even after timeout and retry.</textarea></div>
+        <label class="check-label"><input type="checkbox" />Send only this promise to Nebius.</label>
+        <div class="notice failure" role="alert">Interpretation unavailable. Retry or use the offline fixture.</div>
+      </section>
+      <section class="panel" aria-label="Empty state">
+        <div class="empty"><h3>No execution evidence yet</h3><p class="muted">Review a promise or run the labeled offline fixture.</p></div>
+        <details><summary>Scope and limitations</summary><p class="small muted">One purchase intent. A finite search is not a proof.</p></details>
+      </section>
+      <a href="/">Back to workbench</a>
+    </main>
+  </body>
+</html>
