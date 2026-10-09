@@ -7,6 +7,8 @@ selects `dist/client`, Node 24 is pinned in `package.json`, and `/api/*` rewrite
 `api/index.ts`, a Web Standard `fetch` handler. The function does not start a local listener.
 Corepack uses the pinned pnpm 12.10.1 for the main install/build. If Vercel's build image
 requires Corepack opt-in, set `ENABLE_EXPERIMENTAL_COREPACK=1` in project build settings.
+`pnpm-workspace.yaml` explicitly approves the locked esbuild 0.28.2 install script. Other
+dependency scripts remain unapproved; review and update this policy when upgrading esbuild.
 
 Default: offline fixture replay, bounded exploration, reduction, and evidence downloads.
 Optional: authenticated live NVIDIA/Nebius promise interpretation.
