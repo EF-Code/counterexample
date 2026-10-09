@@ -1,0 +1,19 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "files": { "includes": ["**", "!pnpm-lock.yaml", "!dist", "!artifacts", "!.vercel"] },
+  "formatter": { "indentStyle": "space", "indentWidth": 2, "lineWidth": 100 },
+  "overrides": [
+    {
+      "includes": ["web/tokens.css"],
+      "linter": { "rules": { "complexity": { "noImportantStyles": "off" } } }
+    }
+  ],
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "complexity": { "useLiteralKeys": "off" },
+      "style": { "useImportType": "error", "noNonNullAssertion": "error" },
+      "suspicious": { "noExplicitAny": "error" }
+    }
+  }
+}
