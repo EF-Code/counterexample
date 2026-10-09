@@ -1,5 +1,26 @@
 # Browser workbench verification
 
+## Authorized publication and preview deployment
+
+- Published MIT source to https://github.com/EF-Code/counterexample on `master`.
+  A redacted staged Gitleaks scan found no leaks; real `.env` files, `.vercel/`, local artifacts,
+  dependencies, and build output were excluded from Git publication.
+- The first cloud install failed with `ERR_PNPM_IGNORED_BUILDS`. Added a version-specific
+  esbuild 0.28.2 script approval in `pnpm-workspace.yaml`; other scripts remain unapproved.
+- Application revision `3b1425d` deployed successfully from source to the
+  [Vercel preview](https://counterexample-97o56zngp-ef-code-projects.vercel.app).
+  Vercel reported **Ready**, Node 24 function, and successful fresh pnpm 12.10.1 install/build.
+- Actual hosted `/api/health`, `/api/demo`, and `/api/repair/session` returned correct JSON.
+  Health confirmed no model key/live inference; repair confirmed disabled with a null token.
+- Chromium smoke passed for real hosted HTML, JavaScript, CSS, fonts, favicon, fixture results,
+  and evidence download. Protected preview responses were forwarded by authenticated
+  `vercel curl`, not mocked. This does not test a user's Vercel login or unauthenticated access.
+- [GitHub CI](https://github.com/EF-Code/counterexample/actions/runs/37927912823) passed
+  clean install, types/lint/build/tests, browser tests, and opt-in Docker tests on the deployed
+  application revision. Later publication-status documentation commits do not change application code.
+- Deployment protection remains enabled. No production deployment, model credentials,
+  paid inference call, or separate Docker worker was introduced. Judging access remains open.
+
 ## Vercel deployment-preparation milestone
 
 - Added a separate Web Standard API handler, exact trusted HTTPS origins, CDN asset output,

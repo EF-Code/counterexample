@@ -1,7 +1,8 @@
 # Devpost submission draft and readiness checklist
 
-**Status: draft, not submitted.** Repository publication, hosted/test-build access, video,
-entrant eligibility, and independent validation still need confirmation. Previously recorded
+**Status: draft, not submitted.** The MIT source repository is published and a protected offline
+Vercel preview exists. Unauthenticated judging/test-build access, video, entrant eligibility,
+and independent validation still need confirmation. Previously recorded
 local live-repair artifacts exist and should be reviewed/selected for the final demonstration.
 
 ## Suggested title / track / pitch
@@ -88,9 +89,11 @@ Free OpenCode development access is not the submitted app's runtime integration.
 - [ ] Confirm current official rules and entrant eligibility, including residence/affiliations.
 - [ ] Reconfirm deadline. Previously retrieved page: **October 30, 2026, 10 a.m. PDT**.
 - [ ] Confirm any pre-existing work was significantly updated during the submission window.
-- [ ] Publish the intended source repository with MIT license and successful fresh setup.
-- [ ] Supply the public repository URL; no publication or push has been performed here.
+- [x] Publish the intended source repository with MIT license; clean GitHub CI setup passed.
+- [x] Supply the public repository URL: https://github.com/EF-Code/counterexample.
 - [ ] Provide an accessible working demo or test-build URL, not a localhost URL.
+  Current preview: https://counterexample-97o56zngp-ef-code-projects.vercel.app — requires
+  Vercel Authentication, so this gate remains open for judges without account access.
 - [ ] Select/redact the recorded live proof, and capture a readable current demonstration with explicit consent.
 - [ ] Upload a public YouTube demo within the event's duration limit (previously ≤3 minutes).
 - [ ] Submit genuine platform feedback; no measured performance or adoption claims invented.
