@@ -53,8 +53,11 @@ The Vercel build serves `dist/client` and routes `/api/*` to a Node 24 function.
 The default hosted mode supports the offline fixture without a model key. Live interpretation
 requires server-side Nebius credentials, demo authentication, and an Upstash Redis budget.
 **Fresh Docker repair verification is not available on Vercel**; it remains a local workflow
-until a separate authenticated worker is implemented and provisioned. No public deployment
-has been performed by these changes.
+until a separate authenticated worker is implemented and provisioned.
+
+An [offline Vercel preview](https://counterexample-97o56zngp-ef-code-projects.vercel.app)
+was deployed on October 9, 2026. **Vercel Authentication is enabled**; this is not a public
+judging URL or a production deployment. Live inference and fresh repair are disabled.
 
 ## Browser workflow
 

@@ -1,12 +1,15 @@
-# Judging-period hosting plan — not a deployment
+# Judging-period hosting plan
 
-**Current status: local-only prototype. No public endpoint has been deployed.** The current
-loopback checks, capability token, and process quotas are not a production access-control system.
+**Current status: protected offline Vercel preview deployed; no production deployment.**
+The [preview](https://counterexample-97o56zngp-ef-code-projects.vercel.app) requires Vercel
+Authentication. Fresh Docker repair remains local-only. The local loopback checks, capability
+token, and process quotas are not a production access-control system.
 
 The new [Vercel deployment entrypoint](vercel-deployment.md) is separate from the local
 server. It packages the frontend and fixture API, with exact HTTPS origins and guarded live
-interpretation. Fresh Docker repair is deliberately unavailable there. Its deployment and
-external acceptance checks still need execution; linking/building is not public deployment.
+interpretation. Fresh Docker repair is deliberately unavailable there. The cloud build and
+offline API/browser checks passed; unauthenticated judging access and live-provider checks
+remain open. Linking/building alone is not public deployment.
 
 Previously retrieved schedule: judging December 1–15, 2026, winners around January 11, 2027.
 Reconfirm dates and keep access valid; do not assume submission-day credits last through judging.
@@ -61,4 +64,6 @@ or cloud-credit availability is assumed.
 - [ ] Confirm expiration dates, downtime fallback labels, and access through the judging window.
 - [ ] Re-measure deployed performance; localhost audit results are not deployment guarantees.
 
-No infrastructure, DNS, tunnels, credentials, paid service, or public GitHub setting was changed.
+The initial planning milestone changed no infrastructure, DNS, tunnels, credentials, paid
+service, or public GitHub setting. Subsequent authorization published the source repository
+and created the protected preview above. No production deployment or sandbox worker was created.
