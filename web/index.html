@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counterexample — make product promises executable</title>
+    <meta name="description" content="Review a business promise, reproduce a duplicate-charge failure, and inspect deterministic execution evidence." />
+    <link rel="icon" type="image/svg+xml" href="/mark.svg" />
+    <link rel="stylesheet" href="./tokens.css" />
+    <link rel="stylesheet" href="./primitives.css" />
+    <link rel="stylesheet" href="./layout.css" />
+    <link rel="stylesheet" href="./evidence.css" />
+    <link rel="stylesheet" href="./repair.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#workbench">Skip to workbench</a>
+    <header class="app-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Counterexample home"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M5 5h7v18H5M23 5h-7v18h7M12 14h4" stroke="currentColor" stroke-width="2" /></svg>Counterexample</a>
+        <div class="header-meta"><span class="small muted">Billing workbench</span><span class="badge" id="connection">Checking API…</span></div>
+      </div>
+    </header>
+    <main id="workbench" class="app-main">
+      <div class="page-heading"><div><h1>Put your promise to the test.</h1><p class="muted">Find the sequence your happy-path tests missed.</p></div><span class="badge">Local prototype</span></div>
+      <div class="workbench-grid">
+        <aside class="composer stack" aria-label="Promise and approval">
+          <section class="panel stack" aria-labelledby="promise-heading">
+            <div class="section-title"><h2 id="promise-heading">The promise</h2><span class="step-label">1 / 3</span></div>
+            <form id="promise-form" class="stack">
+              <div><label class="field-label" for="promise">What must never happen?</label><textarea id="promise" name="promise" maxlength="2000" minlength="10" required aria-describedby="promise-help">Never charge twice for the same purchase, even after timeout and retry.</textarea></div>
+              <p id="promise-help" class="small muted">Supported scope: one purchase intent, including retries and worker restarts.</p>
+              <label class="check-label"><input id="consent" type="checkbox" />I agree to send this promise to Nebius for interpretation. Do not include sensitive data.</label>
+              <button id="interpret" class="button" type="submit" disabled>Interpret with Nemotron</button>
+              <p id="model-label" class="small muted mono">Checking model configuration…</p>
+            </form>
+            <div class="divider"></div>
+            <button id="fixture" class="button secondary" type="button">Try offline fixture</button>
+            <p class="small muted">No AI call. Resets the text to the supplied sample promise.</p>
+          </section>
+          <section id="review-panel" class="panel stack" aria-labelledby="review-heading">
+            <div class="section-title"><h2 id="review-heading">Review the meaning</h2><span class="step-label">2 / 3</span></div>
+            <div id="review-content" class="stack"><p class="small muted">An interpretation is a proposal, not permission to execute. Your approval comes next.</p></div>
+          </section>
+          <p id="status" class="small muted" role="status" aria-live="polite">Ready. No model calls have been made by this page.</p>
+          <div id="error" class="notice failure" role="alert" hidden></div>
+        </aside>
+        <section class="workspace stack" aria-labelledby="execution-heading">
+          <div class="execution-heading"><div><h2 id="execution-heading">Execution evidence</h2><p class="small muted">Deterministic fixture. Every charge is inspectable.</p></div><span class="step-label">3 / 3</span></div>
+          <div id="evidence-empty" class="panel empty"><div class="empty-mark" aria-hidden="true">[ ]</div><h3>A promise needs a breaking sequence.</h3><p class="muted">Review a live interpretation, or try the offline fixture.<br /> No payment provider or real money is involved.</p></div>
+          <div id="evidence-content" class="stack" hidden></div>
+        </section>
+      </div>
+      <section class="panel stack repair-panel" aria-labelledby="repair-heading"><div class="section-title"><h2 id="repair-heading">Repair the curated billing example</h2><span class="badge">Explicit approval</span></div><p class="small muted">Review a scoped source change, then verify the candidate in an isolated Docker run.</p><div id="repair-content" class="stack"><p class="small muted">Run the billing fixture above to unlock the curated repair flow.</p></div></section>
+      <footer class="app-footer"><p>AI proposes meaning. Executed traces establish the result.</p><p>One intent · Fake provider · Bounded schedules</p></footer>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
