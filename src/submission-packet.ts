@@ -1,0 +1,133 @@
+import { readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { z } from "zod";
+import { createEvidence } from "./evidence.ts";
+import { createProposal, verifyProposal } from "./repair-flow.ts";
+import { reserveOutput, sha256 } from "./repair-snapshot.ts";
+
+export const packetManifestSchema = z
+  .strictObject({
+    formatVersion: z.literal(1),
+    scope: z.literal("authored_single_purchase_fixture"),
+    generatedAt: z.string().datetime(),
+    applicationVersion: z.string(),
+    runtime: z
+      .strictObject({ node: z.string(), platform: z.string(), arch: z.string() })
+      .readonly(),
+    aiRequestsMade: z.literal(0),
+    liveAiProofIncluded: z.literal(false),
+    automatedTestResults: z.literal("not_run_by_packet_generator"),
+    evidenceSha256: z.string().regex(/^[a-f0-9]{64}$/),
+    sandbox: z.discriminatedUnion("status", [
+      z.strictObject({ status: z.literal("not_run") }).readonly(),
+      z
+        .strictObject({
+          status: z.literal("passed"),
+          imageId: z.string(),
+          schedulesChecked: z.literal(780),
+          baselineViolations: z.literal(285),
+          candidateViolations: z.literal(0),
+          regressionPassed: z.literal(true),
+        })
+        .readonly(),
+    ]),
+    remainingSubmissionRequirements: z.array(z.string()).readonly(),
+  })
+  .readonly();
+export type PacketManifest = z.infer<typeof packetManifestSchema>;
+
+export class PacketError extends Error {
+  readonly code: string;
+  constructor(code: string) {
+    super(code);
+    this.name = "PacketError";
+    this.code = code;
+  }
+}
+
+export async function createSubmissionPacket(request: {
+  readonly outputDirectory: string;
+  readonly sandbox: boolean;
+}): Promise<PacketManifest> {
+  const output = await reserveOutput(request.outputDirectory);
+  const metadata: unknown = JSON.parse(
+    await readFile(new URL("../package.json", import.meta.url), "utf8"),
+  );
+  const version = z.object({ version: z.string() }).parse(metadata).version;
+  const evidence = JSON.stringify(createEvidence(), null, 2);
+  await writeFile(join(output, "evidence.json"), evidence, { flag: "wx", mode: 0o600 });
+  let sandbox: PacketManifest["sandbox"] = { status: "not_run" };
+  if (request.sandbox) {
+    const record = await createProposal({
+      projectDirectory: fileURLToPath(new URL("../examples/billing-service/", import.meta.url)),
+      outputDirectory: join(output, "proposal"),
+      inference: { source: "reference" },
+    });
+    const result = await verifyProposal({
+      proposalDirectory: join(output, "proposal"),
+      outputDirectory: join(output, "candidate"),
+      approved: true,
+    });
+    if (
+      !result.accepted ||
+      !result.regressionPassed ||
+      record.baseline.violationsFound !== 285 ||
+      result.verification.violationsFound !== 0
+    ) {
+      throw new PacketError("reference_rehearsal_failed");
+    }
+    sandbox = {
+      status: "passed",
+      imageId: result.imageId,
+      schedulesChecked: 780,
+      baselineViolations: 285,
+      candidateViolations: 0,
+      regressionPassed: true,
+    };
+  }
+  const manifest = packetManifestSchema.parse({
+    formatVersion: 1,
+    scope: "authored_single_purchase_fixture",
+    generatedAt: new Date().toISOString(),
+    applicationVersion: version,
+    runtime: { node: process.versions.node, platform: process.platform, arch: process.arch },
+    aiRequestsMade: 0,
+    liveAiProofIncluded: false,
+    automatedTestResults: "not_run_by_packet_generator",
+    evidenceSha256: sha256(evidence),
+    sandbox,
+    remainingSubmissionRequirements: [
+      "Confirm entrant eligibility and current official rules.",
+      "Capture a successful live NVIDIA/Nebius interpretation and repair proposal without exposing credentials.",
+      "Provide a public licensed repository URL and working demo URL or accessible test build.",
+      "Record and upload the public demo video within the allowed duration.",
+      "Provide first-hand platform feedback, with failures and limitations disclosed.",
+      "Validate on an independently authored project; current fixture is authored demonstration material.",
+      "Ensure access remains available during judging; no hosting was performed by this command.",
+    ],
+  });
+  await writeFile(join(output, "manifest.json"), JSON.stringify(manifest, null, 2), {
+    flag: "wx",
+    mode: 0o600,
+  });
+  await writeFile(
+    join(output, "RUNBOOK.md"),
+    [
+      "# Counterexample reference evidence packet",
+      "",
+      "This packet contains authored-fixture results, not live model proof or an independent bug finding.",
+      "It does not copy .env files, environment variables, web session tokens, logs, or private web workspaces.",
+      "It is not a universal credential scanner: review source/artifacts before publishing.",
+      "No model request is made. Automated test-suite results are not generated by this command.",
+      request.sandbox
+        ? "Reference repair was automatically rehearsed in hardened Docker containers; this is not approval of an unknown live model proposal."
+        : "Docker repair was not run. Re-run to a new path with --sandbox for reference verification.",
+      "The original project is unchanged; source snapshots and candidate copies require Node 24+.",
+      "Run the documented tests separately and review docs/submission.md, docs/demo-video.md and docs/hosting-plan.md.",
+      "",
+    ].join("\n"),
+    { flag: "wx", mode: 0o600 },
+  );
+  return manifest;
+}
